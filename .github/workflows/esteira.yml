@@ -1,0 +1,35 @@
+name: Esteira de Validacao CI/CD - CEUB
+
+# Definição do Gatilho: Executa as tarefas a cada "push" (envio de código) no repositório
+on: [push]
+
+jobs:
+  # TRABALHO 1: Integração Contínua (Construção e Testes)
+  integracao-continua:
+    name: Fase de CI (Build e Teste Automatizado)
+    runs-on: ubuntu-latest # Executado em máquina virtual Linux limpa na nuvem
+
+    steps:
+    - name: 1. Obter Código do Repositório
+      uses: actions/checkout@v4
+
+    - name: 2. Configurar o Ambiente de Execução (Python)
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: 3. Executar Validação de Qualidade
+      run: python sistema.py
+
+  # TRABALHO 2: Entrega Contínua (Garantia de Pronto para Produção)
+  entrega-continua:
+    name: Fase de CD (Preparação para Distribuição)
+    needs: integracao-continua # Esta fase SÓ executa se a fase de CI passar com sucesso
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 1. Empacotar Artefato para Produção
+      run: |
+        echo "Gerando pacote de entrega segura..."
+        echo "O software passou em todas as métricas de qualidade."
+        echo "Pronto para deploy automático em ambiente de Produção!"
